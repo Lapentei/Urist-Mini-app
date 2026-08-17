@@ -20,7 +20,7 @@
         <p class="subtitle">Мы рядом и ведём ваше дело ❤️</p>
     </div>
 
-    <!-- БЛОК АНКЕТЫ: Показывается только если stage = 0 (без нижнего меню) -->
+    <!-- БЛОК АНКЕТЫ: Показывается только если stage = 0 -->
     <div id="application-block" class="screen" style="display: none; padding: 20px;">
         <header>
             <div class="header-title">
@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <!-- ГЛАВНЫЙ БЛОК ПРИЛОЖЕНИЯ: stage > 0 (С нижним меню и вкладками) -->
+    <!-- ГЛАВНЫЙ БЛОК ПРИЛОЖЕНИЯ: stage > 0 -->
     <div id="main-app" class="screen" style="display: none;">
 
         <!-- ВКЛАДКА 1: ГЛАВНАЯ -->
@@ -90,7 +90,6 @@
 
             <h3 class="section-title">Требует внимания</h3>
             <div class="task-list">
-                <!-- При клике на задачу перебрасываем клиента на вкладку "Документы" -->
                 <div class="task-item" onclick="switchTab('tab-docs')" style="cursor: pointer;">
                     <div class="task-icon">📋</div>
                     <div class="task-info">
@@ -110,7 +109,7 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 2: ДЕЛО (Таймлайн) -->
+        <!-- ВКЛАДКА 2: ДЕЛО (Развернутый таймлайн всех 13 стадий) -->
         <div id="tab-case" class="tab-content">
             <header>
                 <div class="header-title">
@@ -121,7 +120,6 @@
             <div class="card dark-card">
                 <div class="card-subtitle">СТАТУС <span class="badge" id="case-badge">В работе</span></div>
                 <h2 id="case-stage-title">Загрузка...</h2>
-                <!-- Контейнер для таймлайна (развернут всегда на этой вкладке) -->
                 <div id="all-stages-container" class="timeline-container" style="border-top: none; margin-top: 5px;"></div>
             </div>
         </div>
@@ -140,7 +138,7 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 4: ДОКУМЕНТЫ (Форма загрузки) -->
+        <!-- ВКЛАДКА 4: ДОКУМЕНТЫ -->
         <div id="tab-docs" class="tab-content">
             <header>
                 <div class="header-title">
@@ -161,7 +159,7 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 5: КАБИНЕТ (Профиль) -->
+        <!-- ВКЛАДКА 5: КАБИНЕТ -->
         <div id="tab-profile" class="tab-content">
             <header>
                 <div class="header-title">
@@ -183,12 +181,6 @@
                     <div class="task-info">
                         <h4>Ваш юрист</h4>
                         <p>Иванов Алексей</p>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-icon">⚙️</div>
-                    <div class="task-info">
-                        <h4>Настройки уведомлений</h4>
                     </div>
                 </div>
             </div>
