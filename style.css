@@ -1,8 +1,21 @@
+/* --- ОСНОВНЫЕ ЦВЕТА КОМПАНИИ --- */
 :root {
-    --bg-color: #0f1115; 
+    /* Основной фон приложения */
+    --bg-color: #121418;
+
+    /* Фон карточек (чуть светлее фона) */
+    --card-bg: #1e2229;
+
+    /* Акцентный корпоративный цвет (золото/бронза) */
+    --gold: #cfa86e;
+
+    /* Дополнительные цвета */
     --text-color: #ffffff;
-    --gold: #d4af37;
-    --card-bg: #1a1d24;
+    --text-muted: #a0aec0;
+    --border-color: #333a45;
+
+    /* Цвет для выполненных этапов */
+    --success-color: #2e9f6b;
     --light-bg: #f3f4f6;
 }
 
@@ -34,7 +47,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #0f1115;
+    background-color: var(--bg-color);
     color: white;
 }
 
@@ -50,12 +63,12 @@ body {
 
 .circle {
     position: absolute;
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    border: 1px solid rgba(207, 168, 110, 0.3);
     border-radius: 50%;
 }
 .circle-1 { width: 100%; height: 100%; }
 .circle-2 { width: 140%; height: 140%; }
-.circle-3 { width: 180%; height: 180%; border: 1px solid rgba(212, 175, 55, 0.1); }
+.circle-3 { width: 180%; height: 180%; border: 1px solid rgba(207, 168, 110, 0.1); }
 
 .logo {
     width: 60px;
@@ -83,7 +96,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     padding: 20px;
-    background-color: var(--tg-theme-secondary-bg-color, var(--light-bg));
+    background-color: var(--tg-theme-secondary-bg-color, var(--bg-color));
     color: var(--tg-theme-text-color, #000);
 }
 
@@ -95,13 +108,13 @@ header {
     margin-bottom: 25px;
 }
 
-.header-title { 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    font-weight: 700; 
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
     font-size: 14px;
-    color: var(--gold); 
+    color: var(--gold);
 }
 
 .logo-small { width: 28px; height: 28px; border-radius: 8px; }
@@ -117,10 +130,10 @@ header {
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
-.card-subtitle { 
-    font-size: 11px; 
-    color: #8892b0; 
-    text-transform: uppercase; 
+.card-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
     margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
@@ -128,7 +141,7 @@ header {
 }
 
 .badge {
-    background: rgba(212, 175, 55, 0.1);
+    background: rgba(207, 168, 110, 0.1);
     color: var(--gold);
     padding: 4px 8px;
     border-radius: 10px;
@@ -137,9 +150,9 @@ header {
 }
 
 .dark-card h2 { margin: 0 0 20px 0; font-size: 22px; font-weight: 600; }
-.progress-container { width: 100%; height: 6px; background: #333a45; border-radius: 3px; margin: 15px 0; }
+.progress-container { width: 100%; height: 6px; background: var(--border-color); border-radius: 3px; margin: 15px 0; }
 .progress-bar { height: 100%; background: var(--gold); border-radius: 3px; }
-.card-footer { font-size: 13px; color: #a0aec0; margin-bottom: 15px; }
+.card-footer { font-size: 13px; color: var(--text-muted); margin-bottom: 15px; }
 .card-link { color: var(--gold); font-size: 14px; font-weight: 600; }
 
 .section-title { margin: 30px 0 15px 0; font-size: 16px; font-weight: 600; text-align: center; }
@@ -147,7 +160,7 @@ header {
 .task-list { display: flex; flex-direction: column; gap: 12px; }
 
 .task-item {
-    background: var(--tg-theme-bg-color, #ffffff);
+    background: var(--card-bg);
     padding: 16px;
     border-radius: 16px;
     display: flex;
@@ -156,10 +169,10 @@ header {
     box-shadow: 0 2px 10px rgba(0,0,0,0.03);
 }
 
-.task-icon { width: 40px; height: 40px; background: var(--light-bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-.task-info h4 { margin: 0 0 4px 0; font-size: 15px; font-weight: 600; }
-.task-info p { margin: 0; font-size: 12px; color: #888; }
-.arrow { margin-left: auto; color: #ccc; font-weight: bold; }
+.task-icon { width: 40px; height: 40px; background: var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.task-info h4 { margin: 0 0 4px 0; font-size: 15px; font-weight: 600; color: var(--text-color); }
+.task-info p { margin: 0; font-size: 12px; color: var(--text-muted); }
+.arrow { margin-left: auto; color: var(--border-color); font-weight: bold; }
 
 /* --- СТИЛИ ФОРМЫ ЗАГРУЗКИ --- */
 .form-card {
@@ -174,14 +187,15 @@ header {
 
 .input-group label {
     font-size: 13px;
-    color: #a0aec0;
+    color: var(--text-muted);
     margin-bottom: 8px;
 }
 
 .input-group input[type="text"],
+.input-group input[type="tel"],
 .input-group input[type="file"] {
-    background-color: #0f1115;
-    border: 1px solid #333a45;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
     color: white;
     padding: 12px;
     border-radius: 10px;
@@ -190,12 +204,13 @@ header {
     transition: border-color 0.2s;
 }
 
-.input-group input[type="text"]:focus {
+.input-group input[type="text"]:focus,
+.input-group input[type="tel"]:focus {
     border-color: var(--gold);
 }
 
 .input-group input[type="file"]::file-selector-button {
-    background-color: #333a45;
+    background-color: var(--border-color);
     color: white;
     border: none;
     padding: 8px 12px;
@@ -240,7 +255,7 @@ header {
 .timeline-container {
     margin-top: 20px;
     padding-top: 20px;
-    border-top: 1px solid #333a45; /* Разделительная линия */
+    border-top: 1px solid var(--border-color);
 }
 
 .timeline-item {
@@ -265,14 +280,14 @@ header {
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background-color: #333a45; /* Цвет по умолчанию (будущие стадии) */
+    background-color: var(--border-color);
     z-index: 2;
 }
 
 .timeline-line {
     width: 2px;
     flex-grow: 1;
-    background-color: #333a45; /* Цвет по умолчанию */
+    background-color: var(--border-color);
     margin-top: 4px;
     margin-bottom: 4px;
     min-height: 25px;
@@ -286,31 +301,31 @@ header {
 .timeline-title {
     font-size: 14px;
     font-weight: 600;
-    color: #a0aec0; /* Текст будущих стадий */
+    color: var(--text-muted);
     margin: 0 0 4px 0;
 }
 
 .timeline-subtitle {
     font-size: 12px;
-    color: #555; /* Подзаголовок будущих стадий */
+    color: #8892b0;
     text-transform: lowercase;
 }
 
 /* --- Цвета для пройденных стадий (Completed) --- */
-.timeline-item.completed .timeline-dot { background-color: #2e9f6b; } /* Зеленый кружок */
-.timeline-item.completed .timeline-line { background-color: #2e9f6b; } /* Зеленая линия */
-.timeline-item.completed .timeline-title { color: #ffffff; }
-.timeline-item.completed .timeline-subtitle { color: #8892b0; }
+.timeline-item.completed .timeline-dot { background-color: var(--success-color); }
+.timeline-item.completed .timeline-line { background-color: var(--success-color); }
+.timeline-item.completed .timeline-title { color: var(--text-color); }
+.timeline-item.completed .timeline-subtitle { color: var(--text-muted); }
 
 /* --- Цвета для текущей стадии (Current) --- */
 .timeline-item.current .timeline-dot { background-color: var(--gold); }
-.timeline-item.current .timeline-line { background-color: #333a45; } /* Линия к следующей стадии серая */
+.timeline-item.current .timeline-line { background-color: var(--border-color); }
 .timeline-item.current .timeline-title { color: var(--gold); }
 .timeline-item.current .timeline-subtitle { color: var(--gold); opacity: 0.8; }
 
 /* --- СИСТЕМА ВКЛАДОК И НИЖНЕЕ МЕНЮ --- */
 #main-app {
-    padding-bottom: 80px; /* Отступ снизу, чтобы контент не прятался под меню */
+    padding-bottom: 80px;
     display: flex;
     flex-direction: column;
 }
@@ -337,8 +352,8 @@ header {
     left: 0;
     right: 0;
     height: 65px;
-    background-color: #15181e; /* Темный фон как у карточек */
-    border-top: 1px solid #2a2d35;
+    background-color: var(--bg-color);
+    border-top: 1px solid var(--border-color);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -350,7 +365,7 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #6b7280; /* Серый цвет неактивных иконок */
+    color: #6b7280;
     cursor: pointer;
     width: 20%;
     transition: color 0.2s;
@@ -369,11 +384,40 @@ header {
 }
 
 .nav-item.active {
-    color: var(--gold); /* Золотой цвет активной вкладки */
+    color: var(--gold);
 }
 
 /* Убираем рамку сверху у таймлайна, так как он теперь в отдельной карточке */
 #tab-case .timeline-container {
     border-top: none;
     padding-top: 10px;
+}
+
+/* --- СТИЛИ ДЛЯ СПИСКА ЮРИСТОВ --- */
+.lawyer-item {
+    padding: 12px 16px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+.lawyer-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--gold);
+    margin-right: 15px;
+    flex-shrink: 0;
+    background-color: var(--border-color);
+}
+
+.lawyer-item .task-info h4 {
+    color: var(--text-color);
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.lawyer-item .task-info p {
+    color: var(--gold);
+    font-size: 12px;
 }

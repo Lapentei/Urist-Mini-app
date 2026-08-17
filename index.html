@@ -170,32 +170,54 @@
         <div id="tab-profile" class="tab-content">
             <header>
                 <div class="header-title">
-                    <img src="icon.png" alt="Logo Small" class="logo-small">
+                    <!-- Замените icon.png на скачанный логотип компании -->
+                    <img src="icon.png" alt="Логотип" class="logo-small">
                     <span>КАБИНЕТ</span>
                 </div>
             </header>
+
             <div class="card dark-card" style="margin-bottom: 20px;">
                 <h3 style="margin-top: 0;">Ваши данные</h3>
-                <!-- СЮДА ПОДГРУЗЯТСЯ ДАННЫЕ ИЗ БАЗЫ -->
-                <div style="font-size: 14px; line-height: 1.8; color: #a0aec0;">
-                    <div><strong>ФИО:</strong> <span id="profile-fio" style="color: white;">Не указано</span></div>
-                    <div><strong>Телефон:</strong> <span id="profile-phone" style="color: white;">Не указан</span></div>
-                    <div><strong>ИНН:</strong> <span id="profile-inn" style="color: white;">Не указан</span></div>
-                    <div><strong>СНИЛС:</strong> <span id="profile-snils" style="color: white;">Не указан</span></div>
-                    <div><strong>Сумма долга:</strong> <span id="profile-debt" style="color: white;">Не указана</span> руб.</div>
+                <div style="font-size: 14px; line-height: 1.8; color: var(--text-muted);">
+                    <div><strong>ФИО:</strong> <span id="profile-fio" style="color: var(--text-color);">Не указано</span></div>
+                    <div><strong>Телефон:</strong> <span id="profile-phone" style="color: var(--text-color);">Не указан</span></div>
+                    <div><strong>ИНН:</strong> <span id="profile-inn" style="color: var(--text-color);">Не указан</span></div>
+                    <div><strong>СНИЛС:</strong> <span id="profile-snils" style="color: var(--text-color);">Не указан</span></div>
+                    <div><strong>Сумма долга:</strong> <span id="profile-debt" style="color: var(--text-color);">Не указана</span> руб.</div>
 
-                    <hr style="border: 0; border-top: 1px solid #333a45; margin: 12px 0;">
+                    <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 12px 0;">
                     <div><strong>Статус:</strong> Клиент</div>
                     <div><strong>Услуга:</strong> Банкротство физлиц</div>
                 </div>
             </div>
 
+            <h3 class="section-title">Команда юристов</h3>
             <div class="task-list">
-                <div class="task-item">
-                    <div class="task-icon">👨‍⚖️</div>
+                <!-- Юрист 1 -->
+                <div class="task-item lawyer-item">
+                    <!-- Укажите правильное имя файла скачанной фотографии -->
+                    <img src="lawyer1.jpg" alt="Юрист" class="lawyer-avatar">
                     <div class="task-info">
-                        <h4>Ваш юрист</h4>
-                        <p>Иванов Алексей</p>
+                        <h4>Имя Фамилия 1</h4>
+                        <p>Управляющий партнер</p>
+                    </div>
+                </div>
+
+                <!-- Юрист 2 -->
+                <div class="task-item lawyer-item">
+                    <img src="lawyer2.jpg" alt="Юрист" class="lawyer-avatar">
+                    <div class="task-info">
+                        <h4>Имя Фамилия 2</h4>
+                        <p>Старший юрист</p>
+                    </div>
+                </div>
+
+                <!-- Юрист 3 -->
+                <div class="task-item lawyer-item">
+                    <img src="lawyer3.jpg" alt="Юрист" class="lawyer-avatar">
+                    <div class="task-info">
+                        <h4>Имя Фамилия 3</h4>
+                        <p>Ведущий юрист</p>
                     </div>
                 </div>
             </div>
