@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Личный Кабинет</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
     <!-- ЭКРАН 1: Сплеш-скрин -->
@@ -14,7 +14,8 @@
             <div class="circle circle-1"></div>
             <div class="circle circle-2"></div>
             <div class="circle circle-3"></div>
-            <img src="icon.png" alt="Logo" class="logo" id="user-logo">
+            <!-- Квадратный логотип для приветствия -->
+            <img src="logo-square.png" alt="Logo" class="logo" id="user-logo">
         </div>
         <h1 id="greeting">Добрый день, загрузка...</h1>
         <p class="subtitle">Мы рядом и ведём ваше дело ❤️</p>
@@ -24,8 +25,8 @@
     <div id="application-block" class="screen" style="display: none; padding: 20px;">
         <header>
             <div class="header-title">
-                <img src="icon.png" alt="Logo Small" class="logo-small">
-                <span>ЮРИДИЧЕСКИЙ ЦЕНТР</span>
+                <!-- Прямоугольный логотип -->
+                <img src="logo-rect.png" alt="Исаенко и Партнеры" class="logo-rect">
             </div>
         </header>
         <div class="card dark-card form-card">
@@ -41,7 +42,7 @@
                     <input type="text" id="appFio" placeholder="Иванов Иван Иванович" required>
                 </div>
                 <div class="input-group">
-                    <label>Паспортные данные (серия, номер, кем выдан)</label>
+                    <label>Паспортные данные</label>
                     <input type="text" id="appPassport" required>
                 </div>
                 <div class="input-group">
@@ -68,8 +69,7 @@
         <div id="tab-home" class="tab-content active">
             <header>
                 <div class="header-title">
-                    <img src="icon.png" alt="Logo Small" class="logo-small">
-                    <span>ЮРИДИЧЕСКИЙ ЦЕНТР</span>
+                    <img src="logo-rect.png" alt="Исаенко и Партнеры" class="logo-rect">
                 </div>
             </header>
 
@@ -82,7 +82,6 @@
                 <div class="card-footer" style="margin-bottom: 12px;">
                     <span id="home-stage-footer">Этап X из 13</span>
                 </div>
-                <!-- Кнопка переключает на вкладку "Дело" -->
                 <div class="card-link" onclick="switchTab('tab-case')" style="cursor: pointer;">
                     Смотреть все стадии >
                 </div>
@@ -99,7 +98,7 @@
                     <div class="arrow">></div>
                 </div>
                 <div class="task-item" onclick="switchTab('tab-docs')" style="cursor: pointer;">
-                    <div class="task-icon" style="background:#2a2d35;">📎</div>
+                    <div class="task-icon">📎</div>
                     <div class="task-info">
                         <h4>Не хватает 3 документов</h4>
                         <p>Для подачи в суд</p>
@@ -109,12 +108,11 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 2: ДЕЛО (Развернутый таймлайн всех 13 стадий) -->
+        <!-- ВКЛАДКА 2: ДЕЛО -->
         <div id="tab-case" class="tab-content">
             <header>
                 <div class="header-title">
-                    <img src="icon.png" alt="Logo Small" class="logo-small">
-                    <span>ВСЕ СТАДИИ ДЕЛА</span>
+                    <img src="logo-rect.png" alt="Исаенко и Партнеры" class="logo-rect">
                 </div>
             </header>
             <div class="card dark-card">
@@ -128,8 +126,7 @@
         <div id="tab-chat" class="tab-content">
             <header>
                 <div class="header-title">
-                    <img src="icon.png" alt="Logo Small" class="logo-small">
-                    <span>ЧАТ С ЮРИСТОМ</span>
+                    <img src="logo-rect.png" alt="Исаенко и Партнеры" class="logo-rect">
                 </div>
             </header>
             <div class="card dark-card" style="text-align: center; padding: 40px 20px;">
@@ -142,11 +139,9 @@
         <div id="tab-docs" class="tab-content">
             <header>
                 <div class="header-title">
-                    <img src="icon.png" alt="Logo Small" class="logo-small">
-                    <span>ДОКУМЕНТЫ</span>
+                    <img src="logo-rect.png" alt="Исаенко и Партнеры" class="logo-rect">
                 </div>
             </header>
-
             <div class="card dark-card form-card">
                 <h3 style="margin-top: 0; margin-bottom: 15px;">Прикрепить документ</h3>
                 <form id="uploadForm">
@@ -159,62 +154,52 @@
                 <p class="card-footer" style="margin-top: 15px; text-align: center;">При нажатии приложение закроется, и бот попросит вас прислать файл в чат.</p>
             </div>
 
-            <!-- СЮДА БУДУТ ПОДГРУЖАТЬСЯ ЗАГРУЖЕННЫЕ ФАЙЛЫ ИЗ БД -->
             <h3 class="section-title">Ваши документы</h3>
             <div class="task-list" id="uploaded-docs-list">
                 <!-- Карточки документов сгенерирует app.js -->
             </div>
         </div>
 
-        <!-- ВКЛАДКА 5: КАБИНЕТ (Профиль) -->
+        <!-- ВКЛАДКА 5: КАБИНЕТ -->
         <div id="tab-profile" class="tab-content">
             <header>
                 <div class="header-title">
-                    <!-- Замените icon.png на скачанный логотип компании -->
-                    <img src="icon.png" alt="Логотип" class="logo-small">
-                    <span>КАБИНЕТ</span>
+                    <img src="logo-rect.png" alt="Исаенко и Партнеры" class="logo-rect">
                 </div>
             </header>
-
             <div class="card dark-card" style="margin-bottom: 20px;">
                 <h3 style="margin-top: 0;">Ваши данные</h3>
-                <div style="font-size: 14px; line-height: 1.8; color: var(--text-muted);">
-                    <div><strong>ФИО:</strong> <span id="profile-fio" style="color: var(--text-color);">Не указано</span></div>
-                    <div><strong>Телефон:</strong> <span id="profile-phone" style="color: var(--text-color);">Не указан</span></div>
-                    <div><strong>ИНН:</strong> <span id="profile-inn" style="color: var(--text-color);">Не указан</span></div>
-                    <div><strong>СНИЛС:</strong> <span id="profile-snils" style="color: var(--text-color);">Не указан</span></div>
-                    <div><strong>Сумма долга:</strong> <span id="profile-debt" style="color: var(--text-color);">Не указана</span> руб.</div>
+                <div style="font-size: 14px; line-height: 1.8; color: var(--text-color);">
+                    <div><strong style="color: var(--text-muted);">ФИО:</strong> <span id="profile-fio">Не указано</span></div>
+                    <div><strong style="color: var(--text-muted);">Телефон:</strong> <span id="profile-phone">Не указан</span></div>
+                    <div><strong style="color: var(--text-muted);">ИНН:</strong> <span id="profile-inn">Не указан</span></div>
+                    <div><strong style="color: var(--text-muted);">СНИЛС:</strong> <span id="profile-snils">Не указан</span></div>
+                    <div><strong style="color: var(--text-muted);">Сумма долга:</strong> <span id="profile-debt">Не указана</span> руб.</div>
 
                     <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 12px 0;">
-                    <div><strong>Статус:</strong> Клиент</div>
-                    <div><strong>Услуга:</strong> Банкротство физлиц</div>
+                    <div><strong style="color: var(--text-muted);">Статус:</strong> Клиент</div>
+                    <div><strong style="color: var(--text-muted);">Услуга:</strong> Банкротство физлиц</div>
                 </div>
             </div>
 
             <h3 class="section-title">Команда юристов</h3>
             <div class="task-list">
-                <!-- Юрист 1 -->
                 <div class="task-item lawyer-item">
-                    <!-- Укажите правильное имя файла скачанной фотографии -->
-                    <img src="lawyer1.jpg" alt="Юрист" class="lawyer-avatar">
+                    <img src="lawyer1.png" alt="Юрист" class="lawyer-avatar">
                     <div class="task-info">
                         <h4>Имя Фамилия 1</h4>
                         <p>Управляющий партнер</p>
                     </div>
                 </div>
-
-                <!-- Юрист 2 -->
                 <div class="task-item lawyer-item">
-                    <img src="lawyer2.jpg" alt="Юрист" class="lawyer-avatar">
+                    <img src="lawyer2.png" alt="Юрист" class="lawyer-avatar">
                     <div class="task-info">
                         <h4>Имя Фамилия 2</h4>
                         <p>Старший юрист</p>
                     </div>
                 </div>
-
-                <!-- Юрист 3 -->
                 <div class="task-item lawyer-item">
-                    <img src="lawyer3.jpg" alt="Юрист" class="lawyer-avatar">
+                    <img src="lawyer3.png" alt="Юрист" class="lawyer-avatar">
                     <div class="task-info">
                         <h4>Имя Фамилия 3</h4>
                         <p>Ведущий юрист</p>
