@@ -2,28 +2,25 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <!-- Отключаем масштабирование для имитации нативного приложения -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Личный Кабинет</title>
-    <!-- Официальный скрипт Telegram Web Apps -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- ЭКРАН 1: Сплеш-скрин (как на первом скриншоте) -->
+    <!-- ЭКРАН 1: Сплеш-скрин -->
     <div id="splash-screen" class="screen active">
         <div class="logo-container">
             <div class="circle circle-1"></div>
             <div class="circle circle-2"></div>
             <div class="circle circle-3"></div>
-            <!-- Сюда подставится ваша иконка -->
             <img src="icon.png" alt="Logo" class="logo" id="user-logo">
         </div>
         <h1 id="greeting">Добрый день, загрузка...</h1>
         <p class="subtitle">Мы рядом и ведём ваше дело ❤️</p>
     </div>
 
-    <!-- ЭКРАН 2: Главный интерфейс (как на втором скриншоте) -->
+    <!-- ЭКРАН 2: Главный интерфейс -->
     <div id="main-screen" class="screen">
         <header>
             <div class="header-title">
@@ -40,7 +37,6 @@
             <div class="card-subtitle">ВАШЕ ДЕЛО <span class="badge">Готовим заявление</span></div>
             <h2>Банкротство физлиц</h2>
             <div class="progress-container">
-                <!-- Заполнение на 70% -->
                 <div class="progress-bar" style="width: 70%;"></div>
             </div>
             <div class="card-footer">
@@ -68,6 +64,19 @@
                 </div>
                 <div class="arrow">></div>
             </div>
+        </div>
+
+        <!-- ФОРМА ЗАЯВКИ НА ДОКУМЕНТ -->
+        <h3 class="section-title">Прикрепить документ</h3>
+        <div class="card dark-card form-card">
+            <form id="uploadForm">
+                <div class="input-group">
+                    <label for="documentDescription">Какой документ вы хотите отправить?</label>
+                    <input type="text" id="documentDescription" placeholder="Например: Скан паспорта, разворот" required>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Продолжить отправку</button>
+            </form>
         </div>
     </div>
 

@@ -8,6 +8,7 @@ tg.expand();
 tg.ready();
 
 document.addEventListener("DOMContentLoaded", () => {
+    // --- 1. ЛОГИКА ИНТЕРФЕЙСА И ПРИВЕТСТВИЯ ---
     const greetingEl = document.getElementById("greeting");
     
     // Получаем данные о пользователе из объекта Telegram
@@ -19,13 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Подставляем имя в приветствие
     greetingEl.textContent = `Добрый день, ${firstName}`;
     
-    // Логика перехода между экранами
-    // Ждем 2.5 секунды (показываем сплеш-скрин), затем переключаем на главный экран
+    // Логика перехода между экранами (Сплеш-скрин -> Главный экран)
     setTimeout(() => {
         const splash = document.getElementById("splash-screen");
         const main = document.getElementById("main-screen");
         
-        // Плавное исчезновение
+        // Плавное исчезновение сплеш-экрана
         splash.style.opacity = '0';
         
         setTimeout(() => {
@@ -42,7 +42,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }, 50); 
             
-        }, 500); // Время, равное transition в CSS (0.5s)
+        }, 500); 
         
     }, 2500); 
+
+    // --- 2. ЛОГИКА ФОРМЫ (ОТПРАВКА ДАННЫХ В ЧАТ) ---
+    const uploadForm = document.getElementById("uploadForm");
+    
+    if (uploadForm) {
+        uploadForm.addEventListener("submit", (e) => {
+            e.preventDefault(); // Предотвращаем стандартную перезагрузку страницы
+            
+            // Получаем текст из поля ввода
+            const descInput = document.getElementById("documentDescription").value;
+
+            // Создаем объект с данными для бота
+            const dataToSend = {
+                action: "upload_document",
+                description: descInput
+            };
+
+            // Превращаем объект в строку JSON и отправляем в Telegram
+            // ВАЖНО: После вызова этой функции Telegram автоматически закроет Web App!
+            tg.sendData(JSON.stringify(dataToSend));
+        });
+    }
 });
