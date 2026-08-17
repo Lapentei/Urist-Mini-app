@@ -1,69 +1,96 @@
-// Инициализация Telegram Web Apps API
 const tg = window.Telegram.WebApp;
-
-// Разворачиваем приложение на весь экран
 tg.expand();
-
-// Уведомляем Telegram, что приложение готово к отображению
 tg.ready();
 
+// Массив всех этапов
+const STAGES = [
+    "Не начато", // Индекс 0
+    "Заявление подано ожидайте ответа", // 1
+    "Заключен договор", // 2
+    "Сбор документов", // 3
+    "Подготовка заявления в суд", // 4
+    "Уведомление кредиторов", // 5
+    "Заявление направлено в суд", // 6
+    "Заявление принято судом", // 7
+    "Ожидание даты суда", // 8
+    "Признание банкротом", // 9
+    "Ожидание требований кредиторов", // 10
+    "Рассмотрение требований", // 11
+    "Подготовка отчета АУ", // 12
+    "Процедура завершена" // 13
+];
+
 document.addEventListener("DOMContentLoaded", () => {
-    // --- 1. ЛОГИКА ИНТЕРФЕЙСА И ПРИВЕТСТВИЯ ---
     const greetingEl = document.getElementById("greeting");
-    
-    // Получаем данные о пользователе из объекта Telegram
     const user = tg.initDataUnsafe?.user;
-    
-    // Берем имя пользователя. Если не запущено в Telegram, ставим "Гость"
     const firstName = user?.first_name || "Гость";
-    
-    // Подставляем имя в приветствие
     greetingEl.textContent = `Добрый день, ${firstName}`;
-    
-    // Логика перехода между экранами (Сплеш-скрин -> Главный экран)
+
+    // --- Получаем этап из URL параметров ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentStage = parseInt(urlParams.get('stage')) || 0;
+
+    // --- Логика отображения нужного блока ---
     setTimeout(() => {
         const splash = document.getElementById("splash-screen");
         const main = document.getElementById("main-screen");
-        
-        // Плавное исчезновение сплеш-экрана
         splash.style.opacity = '0';
-        
+
         setTimeout(() => {
-            splash.classList.remove("active"); // Убираем из DOM
-            main.classList.add("active");      // Показываем главный экран
-            
-            // Запускаем плавное появление главного экрана
+            splash.classList.remove("active");
+            main.classList.add("active");
+
+            // Включаем нужный блок в зависимости от этапа
+            if (currentStage === 0) {
+                document.getElementById("application-block").style.display = "block";
+            } else {
+                document.getElementById("progress-block").style.display = "block";
+
+                // Обновляем текст и полосу прогресса
+                document.getElementById("stage-title").textContent = STAGES[currentStage];
+                document.getElementById("stage-footer").textContent = `Этап ${currentStage} из 13`;
+
+                // Высчитываем ширину полосы (от 1 до 13)
+                const percent = (currentStage / 13) * 100;
+                document.getElementById("progress-bar").style.width = percent + "%";
+            }
+
             setTimeout(() => {
                 main.style.opacity = '1';
-                
-                // Настраиваем цвет хедера Telegram под светлый экран
                 if(tg.themeParams.secondary_bg_color) {
                     tg.setHeaderColor(tg.themeParams.secondary_bg_color);
                 }
-            }, 50); 
-            
-        }, 500); 
-        
-    }, 2500); 
+            }, 50);
+        }, 500);
+    }, 2500);
 
-    // --- 2. ЛОГИКА ФОРМЫ (ОТПРАВКА ДАННЫХ В ЧАТ) ---
+    // --- ОТПРАВКА АНКЕТЫ ---
+    const appForm = document.getElementById("appForm");
+    if (appForm) {
+        appForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const dataToSend = {
+                action: "submit_application",
+                phone: document.getElementById("appPhone").value,
+                fio: document.getElementById("appFio").value,
+                passport: document.getElementById("appPassport").value,
+                inn: document.getElementById("appInn").value,
+                snils: document.getElementById("appSnils").value,
+                debt: document.getElementById("appDebt").value
+            };
+            tg.sendData(JSON.stringify(dataToSend));
+        });
+    }
+
+    // --- ЗАПРОС НА ОТПРАВКУ ДОКУМЕНТА ---
     const uploadForm = document.getElementById("uploadForm");
-    
     if (uploadForm) {
         uploadForm.addEventListener("submit", (e) => {
-            e.preventDefault(); // Предотвращаем стандартную перезагрузку страницы
-            
-            // Получаем текст из поля ввода
-            const descInput = document.getElementById("documentDescription").value;
-
-            // Создаем объект с данными для бота
+            e.preventDefault();
             const dataToSend = {
                 action: "upload_document",
-                description: descInput
+                description: document.getElementById("documentDescription").value
             };
-
-            // Превращаем объект в строку JSON и отправляем в Telegram
-            // ВАЖНО: После вызова этой функции Telegram автоматически закроет Web App!
             tg.sendData(JSON.stringify(dataToSend));
         });
     }

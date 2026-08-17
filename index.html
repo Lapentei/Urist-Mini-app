@@ -33,51 +33,66 @@
             </div>
         </header>
 
-        <div class="card dark-card">
-            <div class="card-subtitle">ВАШЕ ДЕЛО <span class="badge">Готовим заявление</span></div>
-            <h2>Банкротство физлиц</h2>
-            <div class="progress-container">
-                <div class="progress-bar" style="width: 70%;"></div>
+        <!-- БЛОК 1: АНКЕТА (Показывается только если stage = 0) -->
+        <div id="application-block" style="display: none;">
+            <div class="card dark-card form-card">
+                <h2>Оформление заявления</h2>
+                <p class="card-footer" style="margin-bottom: 20px;">Заполните данные для начала работы по вашему делу.</p>
+                <form id="appForm">
+                    <div class="input-group">
+                        <label>Номер телефона</label>
+                        <input type="tel" id="appPhone" placeholder="+7 999 000 00 00" required>
+                    </div>
+                    <div class="input-group">
+                        <label>ФИО полностью</label>
+                        <input type="text" id="appFio" placeholder="Иванов Иван Иванович" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Паспортные данные (серия, номер, кем выдан)</label>
+                        <input type="text" id="appPassport" required>
+                    </div>
+                    <div class="input-group">
+                        <label>ИНН</label>
+                        <input type="text" id="appInn" required>
+                    </div>
+                    <div class="input-group">
+                        <label>СНИЛС</label>
+                        <input type="text" id="appSnils" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Ориентировочная сумма долга (в рублях)</label>
+                        <input type="text" id="appDebt" placeholder="Например: 1 500 000" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Подать заявление</button>
+                </form>
             </div>
-            <div class="card-footer">
-                <span>Этап 5 из 7 · заседание 24 июля</span>
-            </div>
-            <div class="card-link">Смотреть все стадии ></div>
         </div>
 
-        <h3 class="section-title">Требует внимания</h3>
-        
-        <div class="task-list">
-            <div class="task-item">
-                <div class="task-icon">📋</div>
-                <div class="task-info">
-                    <h4>Прожиточный минимум за июль</h4>
-                    <p>запрос отправлен юристу</p>
+        <!-- БЛОК 2: СТАТУС ДЕЛА (Показывается если stage > 0) -->
+        <div id="progress-block" style="display: none;">
+            <div class="card dark-card">
+                <div class="card-subtitle">ВАШЕ ДЕЛО <span class="badge" id="stage-badge">В работе</span></div>
+                <h2 id="stage-title">Загрузка...</h2>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
                 </div>
-                <div class="arrow">></div>
+                <div class="card-footer">
+                    <span id="stage-footer">Этап X из 13</span>
+                </div>
             </div>
-            <div class="task-item">
-                <div class="task-icon" style="background:#2a2d35;">📎</div>
-                <div class="task-info">
-                    <h4>Не хватает 3 документов</h4>
-                    <p>для подачи в суд</p>
-                </div>
-                <div class="arrow">></div>
+
+            <h3 class="section-title">Прикрепить документ</h3>
+            <div class="card dark-card form-card">
+                <form id="uploadForm">
+                    <div class="input-group">
+                        <label for="documentDescription">Какой документ вы хотите отправить?</label>
+                        <input type="text" id="documentDescription" placeholder="Например: Скан паспорта, разворот" required>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">Продолжить отправку</button>
+                </form>
             </div>
         </div>
 
-        <!-- ФОРМА ЗАЯВКИ НА ДОКУМЕНТ -->
-        <h3 class="section-title">Прикрепить документ</h3>
-        <div class="card dark-card form-card">
-            <form id="uploadForm">
-                <div class="input-group">
-                    <label for="documentDescription">Какой документ вы хотите отправить?</label>
-                    <input type="text" id="documentDescription" placeholder="Например: Скан паспорта, разворот" required>
-                </div>
-
-                <button type="submit" class="submit-btn" id="submitBtn">Продолжить отправку</button>
-            </form>
-        </div>
     </div>
 
     <script src="app.js"></script>
