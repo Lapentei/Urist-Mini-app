@@ -105,11 +105,17 @@ body {
 }
 
 header {
-    width: 100%;
     display: flex;
-    justify-content: center; /* Центрируем логотип по умолчанию */
+    justify-content: flex-start; /* Выравниваем логотип по левому краю (вместо center) */
     align-items: center;
-    margin-bottom: 25px;
+    background-color: #000000; /* Делаем фон шапки черным */
+
+    /* Отрицательные отступы растягивают шапку на всю ширину экрана */
+    margin: -20px -20px 25px -20px;
+
+    /* Внутренние отступы, чтобы логотип не прилипал вплотную к краям экрана */
+    padding: 15px 20px;
+    box-sizing: border-box;
 }
 
 /* Прямоугольный логотип в шапке */
