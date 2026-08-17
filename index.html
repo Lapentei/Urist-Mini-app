@@ -73,11 +73,18 @@
                 <div class="progress-container">
                     <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
                 </div>
-                <div class="card-footer" style="margin-bottom: 12px;">
+                <div class="card-footer" style="margin-bottom: 15px;">
                     <span id="stage-footer">Этап X из 13</span>
                 </div>
-                <!-- Добавленная кнопка просмотра всех этапов -->
-                <div class="card-link" id="view-all-stages-btn" style="cursor: pointer;">Смотреть все стадии ></div>
+
+                <div class="card-link" id="view-all-stages-btn" style="cursor: pointer;">
+                    Смотреть все стадии <span id="arrow-icon">▼</span>
+                </div>
+
+                <!-- Контейнер для вертикального списка стадий (скрыт по умолчанию) -->
+                <div id="all-stages-container" class="timeline-container" style="display: none;">
+                    <!-- Сюда JavaScript будет динамически добавлять список -->
+                </div>
             </div>
 
             <h3 class="section-title">Прикрепить документ</h3>

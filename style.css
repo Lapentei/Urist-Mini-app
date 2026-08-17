@@ -235,3 +235,75 @@ header {
     text-align: center;
     font-weight: 500;
 }
+
+/* --- СТИЛИ ДЛЯ ТАЙМЛАЙНА СТАДИЙ --- */
+.timeline-container {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #333a45; /* Разделительная линия */
+}
+
+.timeline-item {
+    display: flex;
+    gap: 15px;
+    position: relative;
+    margin-bottom: 0;
+}
+
+/* Прячем хвостик линии у последнего элемента */
+.timeline-item:last-child .timeline-line {
+    display: none;
+}
+
+.timeline-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timeline-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #333a45; /* Цвет по умолчанию (будущие стадии) */
+    z-index: 2;
+}
+
+.timeline-line {
+    width: 2px;
+    flex-grow: 1;
+    background-color: #333a45; /* Цвет по умолчанию */
+    margin-top: 4px;
+    margin-bottom: 4px;
+    min-height: 25px;
+}
+
+.timeline-content {
+    padding-bottom: 20px;
+    flex-grow: 1;
+}
+
+.timeline-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #a0aec0; /* Текст будущих стадий */
+    margin: 0 0 4px 0;
+}
+
+.timeline-subtitle {
+    font-size: 12px;
+    color: #555; /* Подзаголовок будущих стадий */
+    text-transform: lowercase;
+}
+
+/* --- Цвета для пройденных стадий (Completed) --- */
+.timeline-item.completed .timeline-dot { background-color: #2e9f6b; } /* Зеленый кружок */
+.timeline-item.completed .timeline-line { background-color: #2e9f6b; } /* Зеленая линия */
+.timeline-item.completed .timeline-title { color: #ffffff; }
+.timeline-item.completed .timeline-subtitle { color: #8892b0; }
+
+/* --- Цвета для текущей стадии (Current) --- */
+.timeline-item.current .timeline-dot { background-color: var(--gold); }
+.timeline-item.current .timeline-line { background-color: #333a45; } /* Линия к следующей стадии серая */
+.timeline-item.current .timeline-title { color: var(--gold); }
+.timeline-item.current .timeline-subtitle { color: var(--gold); opacity: 0.8; }
