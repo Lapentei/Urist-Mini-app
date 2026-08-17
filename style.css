@@ -307,3 +307,73 @@ header {
 .timeline-item.current .timeline-line { background-color: #333a45; } /* Линия к следующей стадии серая */
 .timeline-item.current .timeline-title { color: var(--gold); }
 .timeline-item.current .timeline-subtitle { color: var(--gold); opacity: 0.8; }
+
+/* --- СИСТЕМА ВКЛАДОК И НИЖНЕЕ МЕНЮ --- */
+#main-app {
+    padding-bottom: 80px; /* Отступ снизу, чтобы контент не прятался под меню */
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- BOTTOM NAVIGATION --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    background-color: #15181e; /* Темный фон как у карточек */
+    border-top: 1px solid #2a2d35;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280; /* Серый цвет неактивных иконок */
+    cursor: pointer;
+    width: 20%;
+    transition: color 0.2s;
+}
+
+.nav-item svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+    margin-bottom: 4px;
+}
+
+.nav-item span {
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.nav-item.active {
+    color: var(--gold); /* Золотой цвет активной вкладки */
+}
+
+/* Убираем рамку сверху у таймлайна, так как он теперь в отдельной карточке */
+#tab-case .timeline-container {
+    border-top: none;
+    padding-top: 10px;
+}

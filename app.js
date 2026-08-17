@@ -2,7 +2,6 @@ const tg = window.Telegram.WebApp;
 tg.expand();
 tg.ready();
 
-// Массив этапов с подзаголовками (как на скриншоте)
 const STAGES_DATA = [
     { title: "Заявление подано ожидайте ответа", subtitle: "старт" },
     { title: "Заключен договор", subtitle: "документы" },
@@ -19,17 +18,44 @@ const STAGES_DATA = [
     { title: "Процедура завершена", subtitle: "финал" }
 ];
 
+// Функция переключения вкладок меню
+window.switchTab = function(tabId, navElement = null) {
+    // Скрываем все вкладки
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    // Показываем нужную
+    document.getElementById(tabId).classList.add('active');
+
+    // Обновляем активную иконку в меню
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+
+    // Если функцию вызвали кликом по меню - подсвечиваем эту кнопку
+    if (navElement) {
+        navElement.classList.add('active');
+    } else {
+        // Если вызвали программно (например, кнопка с Главной), ищем нужную иконку вручную
+        let index = ['tab-home', 'tab-case', 'tab-chat', 'tab-docs', 'tab-profile'].indexOf(tabId);
+        if(index !== -1) {
+            document.querySelectorAll('.nav-item')[index].classList.add('active');
+        }
+    }
+
+    // Скроллим страницу наверх при переключении вкладки
+    window.scrollTo(0, 0);
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     const greetingEl = document.getElementById("greeting");
     const user = tg.initDataUnsafe?.user;
     const firstName = user?.first_name || "Гость";
     greetingEl.textContent = `Добрый день, ${firstName}`;
 
-    // Получаем этап из URL (по умолчанию 0)
     const urlParams = new URLSearchParams(window.location.search);
     const currentStage = parseInt(urlParams.get('stage')) || 0;
 
-    // Функция для генерации списка стадий (Таймлайн)
     function buildTimeline(current) {
         const container = document.getElementById("all-stages-container");
         if (!container) return;
@@ -37,14 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
         let html = '';
         STAGES_DATA.forEach((stage, index) => {
             const stageNum = index + 1;
-
-            // Определяем статус стадии (пройдена, текущая, будущая)
             let stateClass = 'future';
-            if (stageNum < current) {
-                stateClass = 'completed';
-            } else if (stageNum === current) {
-                stateClass = 'current';
-            }
+            if (stageNum < current) stateClass = 'completed';
+            else if (stageNum === current) stateClass = 'current';
 
             html += `
                 <div class="timeline-item ${stateClass}">
@@ -59,59 +80,37 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
         });
-
         container.innerHTML = html;
-    }
-
-    // Логика кнопки "Смотреть все стадии"
-    const viewBtn = document.getElementById("view-all-stages-btn");
-    const stagesContainer = document.getElementById("all-stages-container");
-    const arrowIcon = document.getElementById("arrow-icon");
-
-    if (viewBtn && stagesContainer) {
-        viewBtn.addEventListener("click", () => {
-            if (stagesContainer.style.display === "none") {
-                stagesContainer.style.display = "block";
-                arrowIcon.textContent = "▲";
-                viewBtn.firstChild.textContent = "Скрыть стадии ";
-            } else {
-                stagesContainer.style.display = "none";
-                arrowIcon.textContent = "▼";
-                viewBtn.firstChild.textContent = "Смотреть все стадии ";
-            }
-        });
     }
 
     setTimeout(() => {
         const splash = document.getElementById("splash-screen");
-        const main = document.getElementById("main-screen");
+        const mainBlock = currentStage === 0 ? document.getElementById("application-block") : document.getElementById("main-app");
+
         splash.style.opacity = '0';
 
         setTimeout(() => {
             splash.classList.remove("active");
-            main.classList.add("active");
+            mainBlock.style.display = currentStage === 0 ? "block" : "flex";
 
-            if (currentStage === 0) {
-                document.getElementById("application-block").style.display = "block";
-            } else {
-                document.getElementById("progress-block").style.display = "block";
-
-                // Заполняем данные текущего этапа
-                const stageIndex = currentStage - 1; // Индекс в массиве на 1 меньше номера этапа
-                if (STAGES_DATA[stageIndex]) {
-                    document.getElementById("stage-title").textContent = STAGES_DATA[stageIndex].title;
-                }
-                document.getElementById("stage-footer").textContent = `Этап ${currentStage} из 13`;
-
+            if (currentStage > 0) {
+                const stageIndex = currentStage - 1;
+                const stageTitle = STAGES_DATA[stageIndex] ? STAGES_DATA[stageIndex].title : "Загрузка...";
+                const stageText = `Этап ${currentStage} из 13`;
                 const percent = (currentStage / 13) * 100;
-                document.getElementById("progress-bar").style.width = percent + "%";
 
-                // Генерируем таймлайн
+                // Заполняем данные на Главной вкладке
+                document.getElementById("home-stage-title").textContent = stageTitle;
+                document.getElementById("home-stage-footer").textContent = stageText;
+                document.getElementById("home-progress-bar").style.width = percent + "%";
+
+                // Заполняем данные на вкладке Дело
+                document.getElementById("case-stage-title").textContent = stageTitle;
                 buildTimeline(currentStage);
             }
 
             setTimeout(() => {
-                main.style.opacity = '1';
+                mainBlock.style.opacity = '1';
                 if(tg.themeParams.secondary_bg_color) {
                     tg.setHeaderColor(tg.themeParams.secondary_bg_color);
                 }
@@ -119,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 500);
     }, 2500);
 
-    // --- ОТПРАВКА АНКЕТЫ ---
+    // Обработчик отправки Анкеты
     const appForm = document.getElementById("appForm");
     if (appForm) {
         appForm.addEventListener("submit", (e) => {
@@ -137,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- ЗАПРОС НА ОТПРАВКУ ДОКУМЕНТА ---
+    // Обработчик отправки Документов
     const uploadForm = document.getElementById("uploadForm");
     if (uploadForm) {
         uploadForm.addEventListener("submit", (e) => {

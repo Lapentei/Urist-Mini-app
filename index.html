@@ -20,75 +20,136 @@
         <p class="subtitle">Мы рядом и ведём ваше дело ❤️</p>
     </div>
 
-    <!-- ЭКРАН 2: Главный интерфейс -->
-    <div id="main-screen" class="screen">
+    <!-- БЛОК АНКЕТЫ: Показывается только если stage = 0 (без нижнего меню) -->
+    <div id="application-block" class="screen" style="display: none; padding: 20px;">
         <header>
             <div class="header-title">
                 <img src="icon.png" alt="Logo Small" class="logo-small">
                 <span>ЮРИДИЧЕСКИЙ ЦЕНТР</span>
             </div>
-            <!-- Иконки с подарком и обновлением удалены отсюда -->
         </header>
+        <div class="card dark-card form-card">
+            <h2>Оформление заявления</h2>
+            <p class="card-footer" style="margin-bottom: 20px;">Заполните данные для начала работы по вашему делу.</p>
+            <form id="appForm">
+                <div class="input-group">
+                    <label>Номер телефона</label>
+                    <input type="tel" id="appPhone" placeholder="+7 999 000 00 00" required>
+                </div>
+                <div class="input-group">
+                    <label>ФИО полностью</label>
+                    <input type="text" id="appFio" placeholder="Иванов Иван Иванович" required>
+                </div>
+                <div class="input-group">
+                    <label>Паспортные данные (серия, номер, кем выдан)</label>
+                    <input type="text" id="appPassport" required>
+                </div>
+                <div class="input-group">
+                    <label>ИНН</label>
+                    <input type="text" id="appInn" required>
+                </div>
+                <div class="input-group">
+                    <label>СНИЛС</label>
+                    <input type="text" id="appSnils" required>
+                </div>
+                <div class="input-group">
+                    <label>Сумма долга (в рублях)</label>
+                    <input type="text" id="appDebt" placeholder="Например: 1 500 000" required>
+                </div>
+                <button type="submit" class="submit-btn">Подать заявление</button>
+            </form>
+        </div>
+    </div>
 
-        <!-- БЛОК 1: АНКЕТА (Показывается только если stage = 0) -->
-        <div id="application-block" style="display: none;">
-            <div class="card dark-card form-card">
-                <h2>Оформление заявления</h2>
-                <p class="card-footer" style="margin-bottom: 20px;">Заполните данные для начала работы по вашему делу.</p>
-                <form id="appForm">
-                    <div class="input-group">
-                        <label>Номер телефона</label>
-                        <input type="tel" id="appPhone" placeholder="+7 999 000 00 00" required>
+    <!-- ГЛАВНЫЙ БЛОК ПРИЛОЖЕНИЯ: stage > 0 (С нижним меню и вкладками) -->
+    <div id="main-app" class="screen" style="display: none;">
+
+        <!-- ВКЛАДКА 1: ГЛАВНАЯ -->
+        <div id="tab-home" class="tab-content active">
+            <header>
+                <div class="header-title">
+                    <img src="icon.png" alt="Logo Small" class="logo-small">
+                    <span>ЮРИДИЧЕСКИЙ ЦЕНТР</span>
+                </div>
+            </header>
+
+            <div class="card dark-card">
+                <div class="card-subtitle">ВАШЕ ДЕЛО <span class="badge" id="home-badge">В работе</span></div>
+                <h2 id="home-stage-title">Загрузка...</h2>
+                <div class="progress-container">
+                    <div class="progress-bar" id="home-progress-bar" style="width: 0%;"></div>
+                </div>
+                <div class="card-footer" style="margin-bottom: 12px;">
+                    <span id="home-stage-footer">Этап X из 13</span>
+                </div>
+                <!-- Кнопка переключает на вкладку "Дело" -->
+                <div class="card-link" onclick="switchTab('tab-case')" style="cursor: pointer;">
+                    Смотреть все стадии >
+                </div>
+            </div>
+
+            <h3 class="section-title">Требует внимания</h3>
+            <div class="task-list">
+                <!-- При клике на задачу перебрасываем клиента на вкладку "Документы" -->
+                <div class="task-item" onclick="switchTab('tab-docs')" style="cursor: pointer;">
+                    <div class="task-icon">📋</div>
+                    <div class="task-info">
+                        <h4>Прожиточный минимум за июль</h4>
+                        <p>Нажмите, чтобы отправить документ</p>
                     </div>
-                    <div class="input-group">
-                        <label>ФИО полностью</label>
-                        <input type="text" id="appFio" placeholder="Иванов Иван Иванович" required>
+                    <div class="arrow">></div>
+                </div>
+                <div class="task-item" onclick="switchTab('tab-docs')" style="cursor: pointer;">
+                    <div class="task-icon" style="background:#2a2d35;">📎</div>
+                    <div class="task-info">
+                        <h4>Не хватает 3 документов</h4>
+                        <p>Для подачи в суд</p>
                     </div>
-                    <div class="input-group">
-                        <label>Паспортные данные (серия, номер, кем выдан)</label>
-                        <input type="text" id="appPassport" required>
-                    </div>
-                    <div class="input-group">
-                        <label>ИНН</label>
-                        <input type="text" id="appInn" required>
-                    </div>
-                    <div class="input-group">
-                        <label>СНИЛС</label>
-                        <input type="text" id="appSnils" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Ориентировочная сумма долга (в рублях)</label>
-                        <input type="text" id="appDebt" placeholder="Например: 1 500 000" required>
-                    </div>
-                    <button type="submit" class="submit-btn">Подать заявление</button>
-                </form>
+                    <div class="arrow">></div>
+                </div>
             </div>
         </div>
 
-        <!-- БЛОК 2: СТАТУС ДЕЛА (Показывается если stage > 0) -->
-        <div id="progress-block" style="display: none;">
+        <!-- ВКЛАДКА 2: ДЕЛО (Таймлайн) -->
+        <div id="tab-case" class="tab-content">
+            <header>
+                <div class="header-title">
+                    <img src="icon.png" alt="Logo Small" class="logo-small">
+                    <span>ВСЕ СТАДИИ ДЕЛА</span>
+                </div>
+            </header>
             <div class="card dark-card">
-                <div class="card-subtitle">ВАШЕ ДЕЛО <span class="badge" id="stage-badge">В работе</span></div>
-                <h2 id="stage-title">Загрузка...</h2>
-                <div class="progress-container">
-                    <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
-                </div>
-                <div class="card-footer" style="margin-bottom: 15px;">
-                    <span id="stage-footer">Этап X из 13</span>
-                </div>
-
-                <div class="card-link" id="view-all-stages-btn" style="cursor: pointer;">
-                    Смотреть все стадии <span id="arrow-icon">▼</span>
-                </div>
-
-                <!-- Контейнер для вертикального списка стадий (скрыт по умолчанию) -->
-                <div id="all-stages-container" class="timeline-container" style="display: none;">
-                    <!-- Сюда JavaScript будет динамически добавлять список -->
-                </div>
+                <div class="card-subtitle">СТАТУС <span class="badge" id="case-badge">В работе</span></div>
+                <h2 id="case-stage-title">Загрузка...</h2>
+                <!-- Контейнер для таймлайна (развернут всегда на этой вкладке) -->
+                <div id="all-stages-container" class="timeline-container" style="border-top: none; margin-top: 5px;"></div>
             </div>
+        </div>
 
-            <h3 class="section-title">Прикрепить документ</h3>
+        <!-- ВКЛАДКА 3: ЧАТ -->
+        <div id="tab-chat" class="tab-content">
+            <header>
+                <div class="header-title">
+                    <img src="icon.png" alt="Logo Small" class="logo-small">
+                    <span>ЧАТ С ЮРИСТОМ</span>
+                </div>
+            </header>
+            <div class="card dark-card" style="text-align: center; padding: 40px 20px;">
+                <h2>💬</h2>
+                <p class="card-footer">Раздел чата находится в разработке.<br>Скоро вы сможете общаться с юристом прямо здесь!</p>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА 4: ДОКУМЕНТЫ (Форма загрузки) -->
+        <div id="tab-docs" class="tab-content">
+            <header>
+                <div class="header-title">
+                    <img src="icon.png" alt="Logo Small" class="logo-small">
+                    <span>ДОКУМЕНТЫ</span>
+                </div>
+            </header>
             <div class="card dark-card form-card">
+                <h3 style="margin-top: 0; margin-bottom: 15px;">Прикрепить документ</h3>
                 <form id="uploadForm">
                     <div class="input-group">
                         <label for="documentDescription">Какой документ вы хотите отправить?</label>
@@ -96,9 +157,66 @@
                     </div>
                     <button type="submit" class="submit-btn" id="submitBtn">Продолжить отправку</button>
                 </form>
+                <p class="card-footer" style="margin-top: 15px; text-align: center;">При нажатии приложение закроется, и бот попросит вас прислать файл в чат.</p>
             </div>
         </div>
 
+        <!-- ВКЛАДКА 5: КАБИНЕТ (Профиль) -->
+        <div id="tab-profile" class="tab-content">
+            <header>
+                <div class="header-title">
+                    <img src="icon.png" alt="Logo Small" class="logo-small">
+                    <span>КАБИНЕТ</span>
+                </div>
+            </header>
+            <div class="card dark-card" style="margin-bottom: 20px;">
+                <h3 style="margin-top: 0;">Ваши данные</h3>
+                <div style="font-size: 14px; line-height: 1.8; color: #a0aec0;">
+                    <div><strong>Статус:</strong> Клиент</div>
+                    <div><strong>Услуга:</strong> Банкротство физлиц</div>
+                </div>
+            </div>
+
+            <div class="task-list">
+                <div class="task-item">
+                    <div class="task-icon">👨‍⚖️</div>
+                    <div class="task-info">
+                        <h4>Ваш юрист</h4>
+                        <p>Иванов Алексей</p>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-icon">⚙️</div>
+                    <div class="task-info">
+                        <h4>Настройки уведомлений</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- НИЖНЕЕ МЕНЮ НАВИГАЦИИ -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('tab-home', this)">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span>Главная</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('tab-case', this)">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7h20L12 2zm-1 7v5H6v2h5v5h2v-5h5v-2h-5V9h-2z"/></svg>
+                <span>Дело</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('tab-chat', this)">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                <span>Чат</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('tab-docs', this)">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                <span>Документы</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('tab-profile', this)">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>Кабинет</span>
+            </div>
+        </nav>
     </div>
 
     <script src="app.js"></script>
