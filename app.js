@@ -32,7 +32,6 @@ window.switchTab = function(tabId, navElement = null) {
     window.scrollTo(0, 0);
 };
 
-// Функция перенаправления к загрузке конкретного файла
 window.goToUpload = function(docName) {
     switchTab('tab-docs');
     const select = document.getElementById("docSelect");
@@ -60,7 +59,6 @@ window.goToUpload = function(docName) {
     }
 };
 
-// Переход в режим чата
 window.enterChatMode = function() {
     tg.sendData(JSON.stringify({ action: "enter_chat" }));
 };
@@ -76,22 +74,32 @@ function decodeBase64(str) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const greetingEl = document.getElementById("greeting");
-    const user = tg.initDataUnsafe?.user;
-    if (greetingEl) greetingEl.textContent = `Добрый день, ${user?.first_name || "Гость"}`;
-
+    // 1. Считываем данные из URL (БД)
     const urlParams = new URLSearchParams(window.location.search);
     const dataParam = urlParams.get('data');
-    let dbData = { st: 0, d: [], req: [], creq: [] };
+    let dbData = { st: 0, d: [], req: [], creq: [], lws: [] };
 
     if (dataParam) {
         let jsonStr = decodeBase64(dataParam);
         if (jsonStr) dbData = JSON.parse(jsonStr);
     }
 
+    // 2. Логика Имени: Берем ФИО из БД, режем по пробелам и берем второе слово (Имя)
+    let firstName = tg.initDataUnsafe?.user?.first_name || "Гость";
+    if (dbData.fio && dbData.fio !== "Не указано") {
+        const fioParts = dbData.fio.trim().split(/\s+/);
+        if (fioParts.length >= 2) {
+            firstName = fioParts[1];
+        } else {
+            firstName = fioParts[0];
+        }
+    }
+
+    const greetingEl = document.getElementById("greeting");
+    if (greetingEl) greetingEl.textContent = `Добрый день, ${firstName}`;
+
     const currentStage = dbData.st;
 
-    // Логика выпадающего списка "Другой документ"
     const docSelect = document.getElementById("docSelect");
     const customDocGroup = document.getElementById("customDocGroup");
     const docDescInput = document.getElementById("documentDescription");
@@ -109,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ГЕНЕРАЦИЯ БЛОКА "ТРЕБУЕТ ВНИМАНИЯ"
     const attentionList = document.getElementById("attention-list");
     const attentionContainer = document.getElementById("attention-container");
 
@@ -117,13 +124,13 @@ document.addEventListener("DOMContentLoaded", () => {
         let attentionHtml = "";
         let hasTasks = false;
 
-        // Обязательные документы
         if (dbData.req && dbData.req.length > 0) {
             hasTasks = true;
             dbData.req.forEach(docName => {
+                // Изменен эмоджи на скрепку 📎
                 attentionHtml += `
                 <div class="task-item" onclick="goToUpload('${docName}')" style="cursor: pointer;">
-                    <div class="task-icon" style="background:rgba(154, 66, 34, 0.1); color: var(--gold);">⚠️</div>
+                    <div class="task-icon" style="background:rgba(154, 66, 34, 0.1); color: var(--gold);">📎</div>
                     <div class="task-info">
                         <h4>Необходим документ</h4>
                         <p>${docName}</p>
@@ -133,7 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Кастомные запросы от юриста
         if (dbData.creq && dbData.creq.length > 0) {
             hasTasks = true;
             dbData.creq.forEach(docName => {
@@ -155,24 +161,68 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Заполнение профиля
     if (document.getElementById("profile-fio")) document.getElementById("profile-fio").textContent = dbData.fio || "Не указано";
     if (document.getElementById("profile-phone")) document.getElementById("profile-phone").textContent = dbData.ph || "Не указан";
     if (document.getElementById("profile-inn")) document.getElementById("profile-inn").textContent = dbData.inn || "Не указан";
     if (document.getElementById("profile-snils")) document.getElementById("profile-snils").textContent = dbData.sn || "Не указан";
     if (document.getElementById("profile-debt")) document.getElementById("profile-debt").textContent = dbData.db || "0";
 
-    // Отрисовка документов
     const docsListContainer = document.getElementById("uploaded-docs-list");
     if (docsListContainer) {
         if (dbData.d && dbData.d.length > 0) {
             let docsHtml = "";
             dbData.d.forEach(doc => {
-                docsHtml += `<div class="task-item" style="cursor: default;"><div class="task-icon" style="background:#27ae60; color:white;">📄</div><div class="task-info"><h4>${doc.t}</h4><p>Загружен: ${doc.d}</p></div></div>`;
+                // Изменен фон у документов на терракотовый полупрозрачный
+                docsHtml += `
+                <div class="task-item" style="cursor: default;">
+                    <div class="task-icon" style="background:rgba(154, 66, 34, 0.1); color: var(--gold);">📄</div>
+                    <div class="task-info">
+                        <h4>${doc.t}</h4>
+                        <p>Загружен: ${doc.d}</p>
+                    </div>
+                </div>`;
             });
             docsListContainer.innerHTML = docsHtml;
         } else {
             docsListContainer.innerHTML = `<div class="card dark-card" style="text-align: center; color: var(--text-muted); padding: 20px;">Вы пока не загрузили ни одного документа.</div>`;
+        }
+    }
+
+    const assignedContainer = document.getElementById("assigned-lawyer-container");
+    const assignedBlock = document.getElementById("assigned-lawyer-block");
+    const teamContainer = document.getElementById("lawyers-team-container");
+
+    if (assignedContainer && assignedBlock && dbData.al) {
+        assignedBlock.style.display = "block";
+        assignedContainer.innerHTML = `
+            <div class="task-item lawyer-item" style="border-color: var(--gold);">
+                <img src="${dbData.al.p}" alt="Юрист" class="lawyer-avatar" onerror="this.src='lawyer_default.jpg'">
+                <div class="task-info">
+                    <h4>${dbData.al.f}</h4>
+                    <p>${dbData.al.t}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    if (teamContainer) {
+        if (dbData.lws && dbData.lws.length > 0) {
+            let teamHtml = "";
+            dbData.lws.forEach(lawyer => {
+                if (dbData.al && dbData.al.id === lawyer.id) return;
+                teamHtml += `
+                    <div class="task-item lawyer-item">
+                        <img src="${lawyer.p}" alt="Юрист" class="lawyer-avatar" onerror="this.src='lawyer_default.jpg'">
+                        <div class="task-info">
+                            <h4>${lawyer.f}</h4>
+                            <p>${lawyer.t}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            teamContainer.innerHTML = teamHtml;
+        } else {
+            teamContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 13px;">Данные о команде загружаются...</div>`;
         }
     }
 
@@ -245,48 +295,4 @@ document.addEventListener("DOMContentLoaded", () => {
             }));
         });
     }
-
-    // ОТРИСОВКА ЮРИСТОВ В КАБИНЕТЕ
-    const assignedContainer = document.getElementById("assigned-lawyer-container");
-    const assignedBlock = document.getElementById("assigned-lawyer-block");
-    const teamContainer = document.getElementById("lawyers-team-container");
-
-    // 1. Отрисовка закрепленного юриста
-    if (assignedContainer && assignedBlock && dbData.al) {
-        assignedBlock.style.display = "block";
-        assignedContainer.innerHTML = `
-            <div class="task-item lawyer-item" style="border-color: var(--gold);">
-                <img src="${dbData.al.p}" alt="Юрист" class="lawyer-avatar" onerror="this.src='lawyer_default.jpg'">
-                <div class="task-info">
-                    <h4>${dbData.al.f}</h4>
-                    <p>${dbData.al.t}</p>
-                </div>
-            </div>
-        `;
-    }
-
-    // 2. Отрисовка команды юристов
-    if (teamContainer) {
-        if (dbData.lws && dbData.lws.length > 0) {
-            let teamHtml = "";
-            dbData.lws.forEach(lawyer => {
-                // Если этот юрист уже показан в "Ваш юрист", пропускаем его в общем списке
-                if (dbData.al && dbData.al.id === lawyer.id) return;
-
-                teamHtml += `
-                    <div class="task-item lawyer-item">
-                        <img src="${lawyer.p}" alt="Юрист" class="lawyer-avatar" onerror="this.src='lawyer_default.jpg'">
-                        <div class="task-info">
-                            <h4>${lawyer.f}</h4>
-                            <p>${lawyer.t}</p>
-                        </div>
-                    </div>
-                `;
-            });
-            teamContainer.innerHTML = teamHtml;
-        } else {
-            teamContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 13px;">Данные о команде загружаются...</div>`;
-        }
-    }
-
 });

@@ -49,8 +49,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: var(--card-bg); /* Белый фон на старте */
-    color: var(--text-color);
+    background-color: #000000; /* Изменили на черный фон */
+    color: #ffffff; /* Белый цвет текста, чтобы его было видно */
 }
 
 .logo-container {
@@ -120,7 +120,7 @@ header {
 
 /* Прямоугольный логотип в шапке */
 .logo-rect {
-    max-height: 40px; /* Ограничиваем по высоте, чтобы не был слишком большим */
+    max-height: 60px; /* Увеличили размер с 40px до 60px */
     width: auto;
     object-fit: contain;
 }
