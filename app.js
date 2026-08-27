@@ -60,6 +60,11 @@ window.goToUpload = function(docName) {
     }
 };
 
+// Переход в режим чата
+window.enterChatMode = function() {
+    tg.sendData(JSON.stringify({ action: "enter_chat" }));
+};
+
 function decodeBase64(str) {
     try {
         let b64 = str.replace(/-/g, '+').replace(/_/g, '/');
