@@ -245,4 +245,48 @@ document.addEventListener("DOMContentLoaded", () => {
             }));
         });
     }
+
+    // ОТРИСОВКА ЮРИСТОВ В КАБИНЕТЕ
+    const assignedContainer = document.getElementById("assigned-lawyer-container");
+    const assignedBlock = document.getElementById("assigned-lawyer-block");
+    const teamContainer = document.getElementById("lawyers-team-container");
+
+    // 1. Отрисовка закрепленного юриста
+    if (assignedContainer && assignedBlock && dbData.al) {
+        assignedBlock.style.display = "block";
+        assignedContainer.innerHTML = `
+            <div class="task-item lawyer-item" style="border-color: var(--gold);">
+                <img src="${dbData.al.p}" alt="Юрист" class="lawyer-avatar" onerror="this.src='lawyer_default.jpg'">
+                <div class="task-info">
+                    <h4>${dbData.al.f}</h4>
+                    <p>${dbData.al.t}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    // 2. Отрисовка команды юристов
+    if (teamContainer) {
+        if (dbData.lws && dbData.lws.length > 0) {
+            let teamHtml = "";
+            dbData.lws.forEach(lawyer => {
+                // Если этот юрист уже показан в "Ваш юрист", пропускаем его в общем списке
+                if (dbData.al && dbData.al.id === lawyer.id) return;
+
+                teamHtml += `
+                    <div class="task-item lawyer-item">
+                        <img src="${lawyer.p}" alt="Юрист" class="lawyer-avatar" onerror="this.src='lawyer_default.jpg'">
+                        <div class="task-info">
+                            <h4>${lawyer.f}</h4>
+                            <p>${lawyer.t}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            teamContainer.innerHTML = teamHtml;
+        } else {
+            teamContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 13px;">Данные о команде загружаются...</div>`;
+        }
+    }
+
 });
