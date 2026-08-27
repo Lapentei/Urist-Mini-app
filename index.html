@@ -87,23 +87,11 @@
                 </div>
             </div>
 
-            <h3 class="section-title">Требует внимания</h3>
-            <div class="task-list">
-                <div class="task-item" onclick="switchTab('tab-docs')" style="cursor: pointer;">
-                    <div class="task-icon">📋</div>
-                    <div class="task-info">
-                        <h4>Прожиточный минимум за июль</h4>
-                        <p>Нажмите, чтобы отправить документ</p>
-                    </div>
-                    <div class="arrow">></div>
-                </div>
-                <div class="task-item" onclick="switchTab('tab-docs')" style="cursor: pointer;">
-                    <div class="task-icon">📎</div>
-                    <div class="task-info">
-                        <h4>Не хватает 3 документов</h4>
-                        <p>Для подачи в суд</p>
-                    </div>
-                    <div class="arrow">></div>
+            <!-- Блок генерируется динамически через JS -->
+            <div id="attention-container" style="display: none;">
+                <h3 class="section-title">Требует внимания</h3>
+                <div class="task-list" id="attention-list">
+                    <!-- Задачи появятся здесь -->
                 </div>
             </div>
         </div>
@@ -145,10 +133,24 @@
             <div class="card dark-card form-card">
                 <h3 style="margin-top: 0; margin-bottom: 15px;">Прикрепить документ</h3>
                 <form id="uploadForm">
+                    <!-- Выпадающий список -->
                     <div class="input-group">
-                        <label for="documentDescription">Какой документ вы хотите отправить?</label>
-                        <input type="text" id="documentDescription" placeholder="Например: Скан паспорта, разворот" required>
+                        <label for="docSelect">Какой документ вы хотите отправить?</label>
+                        <select id="docSelect" class="form-select" required>
+                            <option value="" disabled selected>Выберите из списка...</option>
+                            <option value="Паспорт">Паспорт</option>
+                            <option value="ИНН">ИНН</option>
+                            <option value="СНИЛС">СНИЛС</option>
+                            <option value="Другой документ">Другой документ...</option>
+                        </select>
                     </div>
+
+                    <!-- Скрытое поле для ручного ввода -->
+                    <div class="input-group" id="customDocGroup" style="display: none;">
+                        <label for="documentDescription">Укажите название документа</label>
+                        <input type="text" id="documentDescription" placeholder="Например: Справка 2-НДФЛ">
+                    </div>
+
                     <button type="submit" class="submit-btn" id="submitBtn">Продолжить отправку</button>
                 </form>
                 <p class="card-footer" style="margin-top: 15px; text-align: center;">При нажатии приложение закроется, и бот попросит вас прислать файл в чат.</p>
@@ -156,7 +158,7 @@
 
             <h3 class="section-title">Ваши документы</h3>
             <div class="task-list" id="uploaded-docs-list">
-                <!-- Карточки документов сгенерирует app.js -->
+                <!-- Карточки документов -->
             </div>
         </div>
 
